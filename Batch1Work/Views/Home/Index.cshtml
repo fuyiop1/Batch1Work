@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    
+    @(Html.Kendo().Grid<Batch1Work.Models.ActionGridItem>()
+          .Name("grid")
+          .HtmlAttributes(new { style = "height:500px" })
+          .DataSource(dataSource => dataSource
+              .Ajax()
+              .Read(read => read.Action("GetActionGridItems", "Home"))
+          )
+          .Columns(columns =>
+          {
+              columns.Bound(c => c.Building).Title("Building").Width(150);
+              columns.Bound(c => c.Floor).Title("Floor").Width(150);
+              columns.Bound(c => c.Area).Title("Area").Width(150);
+              columns.Bound(c => c.Item).Title("Item").Width(150);
+              columns.Bound(c => c.ProductType).Title("Prod. Type").Width(150);
+              columns.Bound(c => c.AsbestosType).Title("Asb. Type").Width(150);
+              columns.Bound(c => c.Quantity).Title("Extent").Width(150);
+              columns.Bound(c => c.InspFreq).Title("Insp. Frq.").Width(150);
+              columns.Bound(c => c.MaScore).Title("MA").Width(75);
+              columns.Bound(c => c.PaScore).Title("PA").Width(75);
+              columns.Bound(c => c.RiskScore).Title("Risk").Width(75);
+              columns.Bound(c => c.RiskCategory).Title("Risk Category").Width(150);
+              columns.Bound(c => c.RecAction).Title("Rec. Action").Width(150);
+          })
+          .Pageable()
+          .Sortable()
+          .Filterable()
+          .Scrollable()
+          )
+</div>
+
+<!--
+<div class="alert alert-warning">
+    A filter is applied to the following columns: Building, Product Type <a href="#" class="alert-link">Click here to remove all filters</a>.
+</div>
+-->
