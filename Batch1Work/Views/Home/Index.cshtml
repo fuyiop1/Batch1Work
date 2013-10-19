@@ -14,7 +14,14 @@
           )
           .Columns(columns =>
           {
-              columns.Bound(c => c.Building).Title("Building").Width(150);
+              columns.Bound(c => c.Building)
+                  .Filterable(f => f.UI("buildingFilter")
+                      .Operators(o => o.ForString(s => s.Clear()
+                          .StartsWith("Starts with")
+                          .IsEqualTo("Is equal to")
+                          .IsNotEqualTo("Is not equal to"))))
+                  .Title("Building")
+                  .Width(150);
               columns.Bound(c => c.Floor).Title("Floor").Width(150);
               columns.Bound(c => c.Area).Title("Area").Width(150);
               columns.Bound(c => c.Item).Title("Item").Width(150);
@@ -30,7 +37,7 @@
           })
           .Pageable()
           .Sortable()
-          .Filterable()
+          .Filterable(f => f.Extra(false))
           .Scrollable()
           )
 </div>
@@ -40,3 +47,16 @@
     A filter is applied to the following columns: Building, Product Type <a href="#" class="alert-link">Click here to remove all filters</a>.
 </div>
 -->
+
+<script type="text/javascript">
+    function buildingFilter(element) {
+        element.kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action("FilterMenuCustomization_Building")"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+    }
+</script>

@@ -20,6 +20,11 @@ namespace Batch1Work.Controllers
             return View();
         }
 
+        public ActionResult FilterMenuCustomization_Building()
+        {
+            return Json(ActionGridItems.Select(x => x.Building).Distinct(), JsonRequestBehavior.AllowGet);
+        }
+
         public virtual JsonResult GetActionGridItems([DataSourceRequest] DataSourceRequest request)
         {
             DataSourceResult result = ActionGridItems.ToDataSourceResult(request);
