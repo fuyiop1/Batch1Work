@@ -4,10 +4,10 @@
 }
 
 <div>
-    
+
     @(Html.Kendo().Grid<Batch1Work.Models.ActionGridItem>()
           .Name("grid")
-          .HtmlAttributes(new { style = "height:500px" })
+          .HtmlAttributes(new { style = "height:420px" })
           .DataSource(dataSource => dataSource
               .Ajax()
               .Read(read => read.Action("GetActionGridItems", "Home")
@@ -15,30 +15,29 @@
           )
           .Columns(columns =>
           {
-              columns.Bound(c => c.Building)
-                  .Filterable(f => f.UI("buildingFilter")
-                      .Operators(o => o.ForString(s => s.Clear()
-                          .StartsWith("Starts with")
-                          .IsEqualTo("Is equal to")
-                          .IsNotEqualTo("Is not equal to"))))
-                  .Title("Building")
-                  .Width(150);
-              columns.Bound(c => c.Floor).Title("Floor").Width(150);
-              columns.Bound(c => c.Area).Title("Area").Width(150);
-              columns.Bound(c => c.Item).Title("Item").Width(150);
-              columns.Bound(c => c.ProductType).Title("Prod. Type").Width(150);
-              columns.Bound(c => c.AsbestosType).Title("Asb. Type").Width(150);
-              columns.Bound(c => c.Quantity).Title("Extent").Width(150);
-              columns.Bound(c => c.InspFreq).Title("Insp. Frq.").Width(150);
-              columns.Bound(c => c.MaScore).Title("MA").Width(75);
-              columns.Bound(c => c.PaScore).Title("PA").Width(75);
-              columns.Bound(c => c.RiskScore).Title("Risk").Width(75);
-              columns.Bound(c => c.RiskCategory).Title("Risk Category").Width(150);
-              columns.Bound(c => c.RecAction).Title("Rec. Action").Width(150);
+              columns.Bound(c => c.Building).Filterable(f => f.UI("buildingFilter")).Title("Building").Width(150);
+              columns.Bound(c => c.Floor).Filterable(f => f.UI("floorFilter")).Title("Floor").Width(150);
+              columns.Bound(c => c.Area).Filterable(f => f.UI("areaFilter")).Title("Area").Width(150);
+              columns.Bound(c => c.Item).Filterable(f => f.UI("itemFilter")).Title("Item").Width(150);
+              columns.Bound(c => c.ProductType).Filterable(f => f.UI("productTypeFilter")).Title("Prod. Type").Width(150);
+              columns.Bound(c => c.AsbestosType).Filterable(f => f.UI("asbestosTypeFilter")).Title("Asb. Type").Width(150);
+              columns.Bound(c => c.Quantity).Filterable(f => f.UI("quantityFilter")).Title("Extent").Width(150);
+              columns.Bound(c => c.InspFreq).Filterable(f => f.UI("inspFreqFilter")).Title("Insp. Frq.").Width(150);
+              columns.Bound(c => c.MaScore).Filterable(f => f.UI("maScoreFilter")).Title("MA").Width(75);
+              columns.Bound(c => c.PaScore).Filterable(f => f.UI("paScoreFilter")).Title("PA").Width(75);
+              columns.Bound(c => c.RiskScore).Filterable(f => f.UI("riskScoreFilter")).Title("Risk").Width(75);
+              columns.Bound(c => c.RiskCategory).Filterable(f => f.UI("riskCategoryFilter")).Title("Risk Category").Width(150);
+              columns.Bound(c => c.RecAction).Filterable(f => f.UI("recActionFilter")).Title("Rec. Action").Width(150);
           })
           .Pageable()
           .Sortable()
-          .Filterable(f => f.Extra(false))
+          .Filterable(
+              //f => f.Extra(false)
+              //.Operators(o => o.ForString(s => s.Clear()
+              //    .StartsWith("Starts with")
+              //    .IsEqualTo("Is equal to")
+              //    .IsNotEqualTo("Is not equal to")))
+                  )
           .Scrollable()
           .Events(e => e.DataBound("grid_dataBound"))
           )
@@ -46,21 +45,72 @@
 
 
 <div id="filteredFieldAlertContainer" class="alert alert-warning hide">
-    A filter is applied to the following columns: <span id="filteredFieldString"></span> <a id="clearAllFiltersBtn" href="javascript:;" class="alert-link">Click here to remove all filters</a>.
+    A filter is applied to the following columns: <span id="filteredFieldString"></span><a id="clearAllFiltersBtn" href="javascript:;" class="alert-link">Click here to remove all filters</a>.
 </div>
 
 
 <script type="text/javascript">
-    function buildingFilter(element) {
+    function setFilter(element, action) {
         element.kendoDropDownList({
             dataSource: {
                 transport: {
-                    read: "@Url.Action("FilterMenuCustomization_Building")"
+                    read: action
                 }
             },
             optionLabel: "--Select Value--"
         });
-        //var grid = $("#grid").data("kendoGrid");
+    }
+
+    function buildingFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_Building")");
+    }
+
+    function floorFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_Floor")");
+    }
+
+    function areaFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_Area")");
+    }
+
+    function itemFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_Item")");
+    }
+
+    function productTypeFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_ProductType")");
+    }
+
+    function asbestosTypeFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_AsbestosType")");
+    }
+
+    function quantityFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_Quantity")");
+    }
+
+    function inspFreqFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_InspFreq")");
+    }
+
+    function maScoreFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_MaScore")");
+    }
+
+    function paScoreFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_PaScore")");
+    }
+
+    function riskScoreFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_RiskScore")");
+    }
+
+    function riskCategoryFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_RiskCategory")");
+    }
+
+    function recActionFilter(element) {
+        setFilter(element, "@Url.Action("FilterMenuCustomization_RecAction")");
     }
 
     function grid_dataBound(e) {
@@ -74,9 +124,11 @@
                 var filteredFieldString = filteredFields.join(", ");
                 $("#filteredFieldString").text(filteredFieldString);
                 $("#filteredFieldAlertContainer").removeClass("hide");
+                resizeGrid();
             } else {
                 $("#filteredFieldString").text("");
                 $("#filteredFieldAlertContainer").addClass("hide");
+                resizeGrid();
             }
         }, 20);
     }
@@ -85,8 +137,25 @@
         $(".k-filter-menu .k-button[type='reset']").trigger("click");
     }
 
-    $("#clearAllFiltersBtn").click(function () {
-        clearAllFilters();
-    });
+    function resizeGrid() {
+        var spaceHeight = $(window).innerHeight() - $(document.body).outerHeight();
+        var gridElement = $("#grid");
+        var dataAreaElement = $("#grid .k-grid-content");
+
+        var gridHeight = parseInt(gridElement.css("height").replace("px", ""));
+        var dataAreaHeight = parseInt(dataAreaElement.css("height").replace("px", ""));
+        gridHeight += spaceHeight;
+        dataAreaHeight += spaceHeight;
+
+        gridElement.css("height", gridHeight + "px");
+        dataAreaElement.css("height", dataAreaHeight + "px");
+    }
+
+    $(document).ready(function () {
+        $("#clearAllFiltersBtn").click(function () {
+            clearAllFilters();
+        });
+        resizeGrid();
+    })
 
 </script>
