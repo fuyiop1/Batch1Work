@@ -10,7 +10,8 @@
           .HtmlAttributes(new { style = "height:500px" })
           .DataSource(dataSource => dataSource
               .Ajax()
-              .Read(read => read.Action("GetActionGridItems", "Home"))
+              .Read(read => read.Action("GetActionGridItems", "Home")
+              )
           )
           .Columns(columns =>
           {
@@ -39,14 +40,15 @@
           .Sortable()
           .Filterable(f => f.Extra(false))
           .Scrollable()
+          .Events(e => e.DataBound("grid_dataBound"))
           )
 </div>
 
-<!--
-<div class="alert alert-warning">
-    A filter is applied to the following columns: Building, Product Type <a href="#" class="alert-link">Click here to remove all filters</a>.
+
+<div id="filteredFieldAlertContainer" class="alert alert-warning hide">
+    A filter is applied to the following columns: <span id="filteredFieldString"></span> <a id="clearAllFiltersBtn" href="javascript:;" class="alert-link">Click here to remove all filters</a>.
 </div>
--->
+
 
 <script type="text/javascript">
     function buildingFilter(element) {
@@ -58,5 +60,33 @@
             },
             optionLabel: "--Select Value--"
         });
+        //var grid = $("#grid").data("kendoGrid");
     }
+
+    function grid_dataBound(e) {
+        setTimeout(function () {
+            var filteredFields = [];
+            $("#grid .k-state-active").each(function () {
+                var sender = $(this);
+                filteredFields.push(sender.parent().data("title"));
+            })
+            if (filteredFields.length > 0) {
+                var filteredFieldString = filteredFields.join(", ");
+                $("#filteredFieldString").text(filteredFieldString);
+                $("#filteredFieldAlertContainer").removeClass("hide");
+            } else {
+                $("#filteredFieldString").text("");
+                $("#filteredFieldAlertContainer").addClass("hide");
+            }
+        }, 20);
+    }
+
+    function clearAllFilters() {
+        $(".k-filter-menu .k-button[type='reset']").trigger("click");
+    }
+
+    $("#clearAllFiltersBtn").click(function () {
+        clearAllFilters();
+    });
+
 </script>
